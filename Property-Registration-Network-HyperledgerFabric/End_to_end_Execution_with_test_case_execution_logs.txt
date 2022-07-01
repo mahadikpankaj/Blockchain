@@ -1,0 +1,840 @@
+/usr/pankaj/property-registration/network>./pankaj-network.sh up -i 1.4.9 -l node -c property-registration-channel -f docker-compose-e2e.yaml -t 120 -d 5 -a -o etcdraft -s couchdb
+
+
+==============================================================================================
+
+Property Registration Network
+Advanced Certification Programme in Blockchain
+conducted by IIIT Bangalore and upGrad
+Assignment on Hyperledger Fabric - v1.4.9
+Project by - Pankaj Mahadik
+  ____   _    _   _ _  __    _       _            __  __    _    _   _    _    ____ ___ _  __
+ |  _ \ / \  | \ | | |/ /   / \     | |          |  \/  |  / \  | | | |  / \  |  _ \_ _| |/ /
+ | |_) / _ \ |  \| | ' /   / _ \ _  | |          | |\/| | / _ \ | |_| | / _ \ | | | | || ' /
+ |  __/ ___ \| |\  | . \  / ___ \ |_| |          | |  | |/ ___ \|  _  |/ ___ \| |_| | || . \
+ |_| /_/   \_\_| \_|_|\_\/_/   \_\___/           |_|  |_/_/   \_\_| |_/_/   \_\____/___|_|\_\
+
+==============================================================================================
+
+Building fabric network and installing chaincodes for channel 'property-registration-channel' with CLI timeout of '120' seconds and CLI delay of '5' seconds and using database 'couchdb'
+Continue? [Y/n] y
+proceeding ...
+
+
+  ____    _____      _      ____    _____   _____   ____
+ / ___|  |_   _|    / \    |  _ \  |_   _| | ____| |  _ \
+ \___ \    | |     / _ \   | |_) |   | |   |  _|   | | | |
+  ___) |   | |    / ___ \  |  _ <    | |   | |___  | |_| |
+ |____/    |_|   /_/   \_\ |_| \_\   |_|   |_____| |____/
+
+
+starting with: Building fabric network and installing chaincodes
+LOCAL_VERSION=1.4.9
+DOCKER_IMAGE_VERSION=1.4.9
+/d/Projects/HLF_1.4.9/fabric-samples/bin/cryptogen
+
+##########################################################
+##### Generate certificates using cryptogen tool #########
+##########################################################
++ cryptogen generate --config crypto-config.yaml
+registrar.property-registration-network.com
+users.property-registration-network.com
++ find ./crypto-config -name config.yaml -print0
++ xargs -0 sed -i 's/\\/\//g'
++ setCACertificatesPath
++ '[' -d crypto-config ']'
+++ cd crypto-config/peerOrganizations/registrar.property-registration-network.com/ca
+++ ls dc92813a38abb8df13355afe16a173c167a4e4937bb04e54aa0bd5ff9300ecd3_sk
++ export CA1_PRIVATE_KEY=dc92813a38abb8df13355afe16a173c167a4e4937bb04e54aa0bd5ff9300ecd3_sk
++ CA1_PRIVATE_KEY=dc92813a38abb8df13355afe16a173c167a4e4937bb04e54aa0bd5ff9300ecd3_sk
+++ cd crypto-config/peerOrganizations/users.property-registration-network.com/ca
+++ ls 8643f56b8968ad170fd71dfa8acd11f9be1cbf39d411028548060941d8edefa0_sk
++ export CA2_PRIVATE_KEY=8643f56b8968ad170fd71dfa8acd11f9be1cbf39d411028548060941d8edefa0_sk
++ CA2_PRIVATE_KEY=8643f56b8968ad170fd71dfa8acd11f9be1cbf39d411028548060941d8edefa0_sk
++ res=0
++ set +x
+/d/Projects/HLF_1.4.9/fabric-samples/bin/configtxgen
+##########################################################
+#########  Generating Orderer Genesis block ##############
+##########################################################
+CONSENSUS_TYPE=etcdraft
++ '[' etcdraft == solo ']'
++ '[' etcdraft == kafka ']'
++ '[' etcdraft == etcdraft ']'
++ configtxgen -profile SampleMultiNodeEtcdRaft -channelID pankaj-network-sys-channel -outputBlock ./channel-artifacts/genesis.block
+←[34m2022-04-30 15:50:23.677 IST [common.tools.configtxgen] main -> INFO 001←[0m Loading configuration
+←[34m2022-04-30 15:50:23.952 IST [common.tools.configtxgen.localconfig] completeInitialization -> INFO 002←[0m orderer type: etcdraft
+←[34m2022-04-30 15:50:23.953 IST [common.tools.configtxgen.localconfig] completeInitialization -> INFO 003←[0m Orderer.EtcdRaft.Options unset, setting to tick_interval:"500ms" election_tick:10 heartbeat_tick:1 max_inflight_blocks:5 snapshot_interval_size:20971520
+←[34m2022-04-30 15:50:23.953 IST [common.tools.configtxgen.localconfig] Load -> INFO 004←[0m Loaded configuration: D:\Projects\property-registration\network\configtx.yaml
+←[34m2022-04-30 15:50:24.229 IST [common.tools.configtxgen.localconfig] completeInitialization -> INFO 005←[0m orderer type: etcdraft
+←[34m2022-04-30 15:50:24.229 IST [common.tools.configtxgen.localconfig] completeInitialization -> INFO 006←[0m Orderer.EtcdRaft.Options unset, setting to tick_interval:"500ms" election_tick:10 heartbeat_tick:1 max_inflight_blocks:5 snapshot_interval_size:20971520
+←[34m2022-04-30 15:50:24.230 IST [common.tools.configtxgen.localconfig] LoadTopLevel -> INFO 007←[0m Loaded configuration: D:\Projects\property-registration\network\configtx.yaml
+←[34m2022-04-30 15:50:24.241 IST [common.tools.configtxgen] doOutputBlock -> INFO 008←[0m Generating genesis block
+←[34m2022-04-30 15:50:24.244 IST [common.tools.configtxgen] doOutputBlock -> INFO 009←[0m Writing genesis block
++ res=0
++ set +x
+
+#################################################################
+### Generating channel configuration transaction 'channel.tx' ###
+#################################################################
++ configtxgen -profile TwoOrgsChannel -outputCreateChannelTx ./channel-artifacts/channel.tx -channelID property-registration-channel
+←[34m2022-04-30 15:50:24.427 IST [common.tools.configtxgen] main -> INFO 001←[0m Loading configuration
+←[34m2022-04-30 15:50:24.703 IST [common.tools.configtxgen.localconfig] Load -> INFO 002←[0m Loaded configuration: D:\Projects\property-registration\network\configtx.yaml
+←[34m2022-04-30 15:50:24.973 IST [common.tools.configtxgen.localconfig] completeInitialization -> INFO 003←[0m orderer type: etcdraft
+←[34m2022-04-30 15:50:24.973 IST [common.tools.configtxgen.localconfig] completeInitialization -> INFO 004←[0m Orderer.EtcdRaft.Options unset, setting to tick_interval:"500ms" election_tick:10 heartbeat_tick:1 max_inflight_blocks:5 snapshot_interval_size:20971520
+←[34m2022-04-30 15:50:24.976 IST [common.tools.configtxgen.localconfig] LoadTopLevel -> INFO 005←[0m Loaded configuration: D:\Projects\property-registration\network\configtx.yaml
+←[34m2022-04-30 15:50:24.980 IST [common.tools.configtxgen] doOutputChannelCreateTx -> INFO 006←[0m Generating new channel configtx
+←[34m2022-04-30 15:50:24.992 IST [common.tools.configtxgen] doOutputChannelCreateTx -> INFO 007←[0m Writing new channel tx
++ res=0
++ set +x
+
+#################################################################
+#######    Generating anchor peer update for registrarMSP   ##########
+#################################################################
++ configtxgen -profile TwoOrgsChannel -outputAnchorPeersUpdate ./channel-artifacts/registrarMSPanchors.tx -channelID property-registration-channel -asOrg registrarMSP
+←[34m2022-04-30 15:50:25.182 IST [common.tools.configtxgen] main -> INFO 001←[0m Loading configuration
+←[34m2022-04-30 15:50:25.457 IST [common.tools.configtxgen.localconfig] Load -> INFO 002←[0m Loaded configuration: D:\Projects\property-registration\network\configtx.yaml
+←[34m2022-04-30 15:50:25.737 IST [common.tools.configtxgen.localconfig] completeInitialization -> INFO 003←[0m orderer type: etcdraft
+←[34m2022-04-30 15:50:25.737 IST [common.tools.configtxgen.localconfig] completeInitialization -> INFO 004←[0m Orderer.EtcdRaft.Options unset, setting to tick_interval:"500ms" election_tick:10 heartbeat_tick:1 max_inflight_blocks:5 snapshot_interval_size:20971520
+←[34m2022-04-30 15:50:25.741 IST [common.tools.configtxgen.localconfig] LoadTopLevel -> INFO 005←[0m Loaded configuration: D:\Projects\property-registration\network\configtx.yaml
+←[34m2022-04-30 15:50:25.744 IST [common.tools.configtxgen] doOutputAnchorPeersUpdate -> INFO 006←[0m Generating anchor peer update
+←[34m2022-04-30 15:50:25.746 IST [common.tools.configtxgen] doOutputAnchorPeersUpdate -> INFO 007←[0m Writing anchor peer update
++ res=0
++ set +x
+
+#################################################################
+#######    Generating anchor peer update for usersMSP   ##########
+#################################################################
++ configtxgen -profile TwoOrgsChannel -outputAnchorPeersUpdate ./channel-artifacts/usersMSPanchors.tx -channelID property-registration-channel -asOrg usersMSP
+←[34m2022-04-30 15:50:25.917 IST [common.tools.configtxgen] main -> INFO 001←[0m Loading configuration
+←[34m2022-04-30 15:50:26.192 IST [common.tools.configtxgen.localconfig] Load -> INFO 002←[0m Loaded configuration: D:\Projects\property-registration\network\configtx.yaml
+←[34m2022-04-30 15:50:26.464 IST [common.tools.configtxgen.localconfig] completeInitialization -> INFO 003←[0m orderer type: etcdraft
+←[34m2022-04-30 15:50:26.465 IST [common.tools.configtxgen.localconfig] completeInitialization -> INFO 004←[0m Orderer.EtcdRaft.Options unset, setting to tick_interval:"500ms" election_tick:10 heartbeat_tick:1 max_inflight_blocks:5 snapshot_interval_size:20971520
+←[34m2022-04-30 15:50:26.469 IST [common.tools.configtxgen.localconfig] LoadTopLevel -> INFO 005←[0m Loaded configuration: D:\Projects\property-registration\network\configtx.yaml
+←[34m2022-04-30 15:50:26.472 IST [common.tools.configtxgen] doOutputAnchorPeersUpdate -> INFO 006←[0m Generating anchor peer update
+←[34m2022-04-30 15:50:26.473 IST [common.tools.configtxgen] doOutputAnchorPeersUpdate -> INFO 007←[0m Writing anchor peer update
++ res=0
++ set +x
+
+Creating network "pankaj_property_registration_network" with the default driver
+Creating volume "pankaj_orderer.property-registration-network.com" with default driver
+Creating volume "pankaj_peer0.registrar.property-registration-network.com" with default driver
+Creating volume "pankaj_peer1.registrar.property-registration-network.com" with default driver
+Creating volume "pankaj_peer0.users.property-registration-network.com" with default driver
+Creating volume "pankaj_peer1.users.property-registration-network.com" with default driver
+Creating volume "pankaj_peer2.users.property-registration-network.com" with default driver
+Creating volume "pankaj_orderer2.property-registration-network.com" with default driver
+Creating volume "pankaj_orderer3.property-registration-network.com" with default driver
+Creating couchdb.peer1.registrar.property-registration-network.com ... done
+Creating orderer.property-registration-network.com                 ... done
+Creating ca.users.property-registration-network.com                ... done
+Creating ca.registrar.property-registration-network.com            ... done
+Creating couchdb.peer0.registrar.property-registration-network.com ... done
+Creating couchdb.peer0.users.property-registration-network.com     ... done
+Creating orderer3.property-registration-network.com                ... done
+Creating couchdb.peer1.users.property-registration-network.com     ... done
+Creating couchdb.peer2.users.property-registration-network.com     ... done
+Creating orderer2.property-registration-network.com                ... done
+Creating peer0.users.property-registration-network.com             ... done
+Creating peer0.registrar.property-registration-network.com         ... done
+Creating peer2.users.property-registration-network.com             ... done
+Creating peer1.registrar.property-registration-network.com         ... done
+Creating peer1.users.property-registration-network.com             ... done
+Creating cli                                                       ... done
+CONTAINER ID        IMAGE                                    COMMAND                  CREATED              STATUS              PORTS                                        NAMES
+8cefce76b525        hyperledger/fabric-tools:amd64-1.4.9     "/bin/bash"              19 seconds ago       Up 5 seconds                                                     cli
+b513f2dac1ea        hyperledger/fabric-peer:amd64-1.4.9      "peer node start"        38 seconds ago       Up 19 seconds       0.0.0.0:10051->10051/tcp                     peer1.users.property-registration-network.com
+7135061c6943        hyperledger/fabric-peer:amd64-1.4.9      "peer node start"        38 seconds ago       Up 21 seconds       0.0.0.0:8051->8051/tcp                       peer1.registrar.property-registration-network.com
+59721ef305a5        hyperledger/fabric-peer:amd64-1.4.9      "peer node start"        42 seconds ago       Up 24 seconds       0.0.0.0:11051->11051/tcp                     peer2.users.property-registration-network.com
+64471688786f        hyperledger/fabric-peer:amd64-1.4.9      "peer node start"        45 seconds ago       Up 25 seconds       0.0.0.0:7051->7051/tcp                       peer0.registrar.property-registration-network.com
+56d5f51403fc        hyperledger/fabric-peer:amd64-1.4.9      "peer node start"        49 seconds ago       Up 31 seconds       0.0.0.0:9051->9051/tcp                       peer0.users.property-registration-network.com
+8196cdff7292        hyperledger/fabric-couchdb:0.4.21        "tini -- /docker-ent…"   About a minute ago   Up 40 seconds       4369/tcp, 9100/tcp, 0.0.0.0:8984->5984/tcp   couchdb.peer1.users.property-registration-network.com
+643d2555d231        hyperledger/fabric-couchdb:0.4.21        "tini -- /docker-ent…"   About a minute ago   Up 46 seconds       4369/tcp, 9100/tcp, 0.0.0.0:5984->5984/tcp   couchdb.peer0.registrar.property-registration-network.com
+3df2ec487beb        hyperledger/fabric-orderer:amd64-1.4.9   "orderer"                About a minute ago   Up 59 seconds       0.0.0.0:9050->7050/tcp                       orderer3.property-registration-network.com
+53a5c64d3915        hyperledger/fabric-orderer:amd64-1.4.9   "orderer"                About a minute ago   Up 52 seconds       0.0.0.0:8050->7050/tcp                       orderer2.property-registration-network.com
+8c8ca28a753e        hyperledger/fabric-orderer:amd64-1.4.9   "orderer"                About a minute ago   Up 59 seconds       0.0.0.0:7050->7050/tcp                       orderer.property-registration-network.com
+7f0df7dafdba        hyperledger/fabric-ca:amd64-1.4.9        "sh -c 'fabric-ca-se…"   About a minute ago   Up About a minute   0.0.0.0:7054->7054/tcp                       ca.registrar.property-registration-network.com
+9338173442bb        hyperledger/fabric-couchdb:0.4.21        "tini -- /docker-ent…"   About a minute ago   Up 45 seconds       4369/tcp, 9100/tcp, 0.0.0.0:9984->5984/tcp   couchdb.peer2.users.property-registration-network.com
+b7d2b90740bd        hyperledger/fabric-couchdb:0.4.21        "tini -- /docker-ent…"   About a minute ago   Up 52 seconds       4369/tcp, 9100/tcp, 0.0.0.0:7984->5984/tcp   couchdb.peer0.users.property-registration-network.com
+e0db190672c4        hyperledger/fabric-ca:amd64-1.4.9        "sh -c 'fabric-ca-se…"   About a minute ago   Up About a minute   0.0.0.0:8054->7054/tcp                       ca.users.property-registration-network.com
+498a02c9feac        hyperledger/fabric-couchdb:0.4.21        "tini -- /docker-ent…"   About a minute ago   Up 41 seconds       4369/tcp, 9100/tcp, 0.0.0.0:6984->5984/tcp   couchdb.peer1.registrar.property-registration-network.com
+Sleeping 15s to allow etcdraft cluster to complete booting
+Build network (create channel, join channel)
+
+Channel name : property-registration-channel
+
+----------------------------------------------------------------------------------------------
+Creating channel...
+----------------------------------------------------------------------------------------------
+
++ peer channel create -o orderer.property-registration-network.com:7050 -c property-registration-channel -f ./channel-artifacts/channel.tx --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/property-registration-network.com/orderers/orderer.property-registration-network.com/msp/tlscacerts/tlsca.property-registration-network.com-cert.pem
++ res=0
++ set +x
+2022-04-30 10:22:11.006 UTC [channelCmd] InitCmdFactory -> INFO 001 Endorser and orderer connections initialized
+2022-04-30 10:22:11.576 UTC [cli.common] readBlock -> INFO 002 Got status: &{NOT_FOUND}
+2022-04-30 10:22:11.608 UTC [channelCmd] InitCmdFactory -> INFO 003 Endorser and orderer connections initialized
+2022-04-30 10:22:11.822 UTC [cli.common] readBlock -> INFO 004 Got status: &{NOT_FOUND}
+2022-04-30 10:22:11.838 UTC [channelCmd] InitCmdFactory -> INFO 005 Endorser and orderer connections initialized
+2022-04-30 10:22:12.040 UTC [cli.common] readBlock -> INFO 006 Got status: &{NOT_FOUND}
+2022-04-30 10:22:12.054 UTC [channelCmd] InitCmdFactory -> INFO 007 Endorser and orderer connections initialized
+2022-04-30 10:22:12.256 UTC [cli.common] readBlock -> INFO 008 Got status: &{NOT_FOUND}
+2022-04-30 10:22:12.274 UTC [channelCmd] InitCmdFactory -> INFO 009 Endorser and orderer connections initialized
+2022-04-30 10:22:12.537 UTC [cli.common] readBlock -> INFO 00a Got status: &{NOT_FOUND}
+2022-04-30 10:22:12.721 UTC [channelCmd] InitCmdFactory -> INFO 00b Endorser and orderer connections initialized
+2022-04-30 10:22:16.289 UTC [cli.common] readBlock -> INFO 00c Got status: &{SERVICE_UNAVAILABLE}
+2022-04-30 10:22:16.303 UTC [channelCmd] InitCmdFactory -> INFO 00d Endorser and orderer connections initialized
+2022-04-30 10:22:16.505 UTC [cli.common] readBlock -> INFO 00e Got status: &{SERVICE_UNAVAILABLE}
+2022-04-30 10:22:16.563 UTC [channelCmd] InitCmdFactory -> INFO 00f Endorser and orderer connections initialized
+2022-04-30 10:22:16.765 UTC [cli.common] readBlock -> INFO 010 Got status: &{SERVICE_UNAVAILABLE}
+2022-04-30 10:22:16.778 UTC [channelCmd] InitCmdFactory -> INFO 011 Endorser and orderer connections initialized
+2022-04-30 10:22:16.981 UTC [cli.common] readBlock -> INFO 012 Got status: &{SERVICE_UNAVAILABLE}
+2022-04-30 10:22:16.995 UTC [channelCmd] InitCmdFactory -> INFO 013 Endorser and orderer connections initialized
+2022-04-30 10:22:17.197 UTC [cli.common] readBlock -> INFO 014 Got status: &{SERVICE_UNAVAILABLE}
+2022-04-30 10:22:17.213 UTC [channelCmd] InitCmdFactory -> INFO 015 Endorser and orderer connections initialized
+2022-04-30 10:22:17.416 UTC [cli.common] readBlock -> INFO 016 Got status: &{SERVICE_UNAVAILABLE}
+2022-04-30 10:22:18.845 UTC [channelCmd] InitCmdFactory -> INFO 017 Endorser and orderer connections initialized
+2022-04-30 10:22:19.055 UTC [cli.common] readBlock -> INFO 018 Received block: 0
+===================== Channel 'property-registration-channel' created =====================
+
+
+----------------------------------------------------------------------------------------------
+Having all peers join the channel...
+----------------------------------------------------------------------------------------------
+
++ peer channel join -b property-registration-channel.block
++ res=0
++ set +x
+2022-04-30 10:22:20.622 UTC [channelCmd] InitCmdFactory -> INFO 001 Endorser and orderer connections initialized
+2022-04-30 10:22:32.033 UTC [channelCmd] executeJoin -> INFO 002 Successfully submitted proposal to join channel
+===================== peer0.registrar joined channel 'property-registration-channel' =====================
+
++ peer channel join -b property-registration-channel.block
++ res=0
++ set +x
+2022-04-30 10:22:39.010 UTC [channelCmd] InitCmdFactory -> INFO 001 Endorser and orderer connections initialized
+2022-04-30 10:22:46.891 UTC [channelCmd] executeJoin -> INFO 002 Successfully submitted proposal to join channel
+===================== peer1.registrar joined channel 'property-registration-channel' =====================
+
++ peer channel join -b property-registration-channel.block
++ res=0
++ set +x
+2022-04-30 10:22:52.985 UTC [channelCmd] InitCmdFactory -> INFO 001 Endorser and orderer connections initialized
+2022-04-30 10:22:59.118 UTC [channelCmd] executeJoin -> INFO 002 Successfully submitted proposal to join channel
+===================== peer0.users joined channel 'property-registration-channel' =====================
+
++ peer channel join -b property-registration-channel.block
++ res=0
++ set +x
+2022-04-30 10:23:05.911 UTC [channelCmd] InitCmdFactory -> INFO 001 Endorser and orderer connections initialized
+2022-04-30 10:23:14.456 UTC [channelCmd] executeJoin -> INFO 002 Successfully submitted proposal to join channel
+===================== peer1.users joined channel 'property-registration-channel' =====================
+
++ peer channel join -b property-registration-channel.block
++ res=0
++ set +x
+2022-04-30 10:23:20.754 UTC [channelCmd] InitCmdFactory -> INFO 001 Endorser and orderer connections initialized
+2022-04-30 10:23:25.654 UTC [channelCmd] executeJoin -> INFO 002 Successfully submitted proposal to join channel
+===================== peer2.users joined channel 'property-registration-channel' =====================
+
+
+----------------------------------------------------------------------------------------------
+Updating anchor peers for registrar...
+----------------------------------------------------------------------------------------------
+
++ peer channel update -o orderer.property-registration-network.com:7050 -c property-registration-channel -f ./channel-artifacts/registrarMSPanchors.tx --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/property-registration-network.com/orderers/orderer.property-registration-network.com/msp/tlscacerts/tlsca.property-registration-network.com-cert.pem
++ res=0
++ set +x
+2022-04-30 10:23:32.372 UTC [channelCmd] InitCmdFactory -> INFO 001 Endorser and orderer connections initialized
+2022-04-30 10:23:32.415 UTC [channelCmd] update -> INFO 002 Successfully submitted channel update
+===================== Anchor peers updated for org 'registrarMSP' on channel 'property-registration-channel' =====================
+
+
+----------------------------------------------------------------------------------------------
+Updating anchor peers for users...
+----------------------------------------------------------------------------------------------
+
++ peer channel update -o orderer.property-registration-network.com:7050 -c property-registration-channel -f ./channel-artifacts/usersMSPanchors.tx --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/property-registration-network.com/orderers/orderer.property-registration-network.com/msp/tlscacerts/tlsca.property-registration-network.com-cert.pem
++ res=0
++ set +x
+2022-04-30 10:23:38.978 UTC [channelCmd] InitCmdFactory -> INFO 001 Endorser and orderer connections initialized
+2022-04-30 10:23:39.019 UTC [channelCmd] update -> INFO 002 Successfully submitted channel update
+===================== Anchor peers updated for org 'usersMSP' on channel 'property-registration-channel' =====================
+
+
+========= All GOOD, pankaj_property_registration_network created successfully...! ===========
+
+Channel name : property-registration-channel
+
+----------------------------------------------------------------------------------------------
+Installing chaincodes on peer0.registrar
+----------------------------------------------------------------------------------------------
+
++ peer chaincode install -n regnet -v 1.0 -l node -p /opt/gopath/src/github.com/chaincode/node
++ res=0
++ set +x
+2022-04-30 10:23:48.770 UTC [chaincodeCmd] checkChaincodeCmdParams -> INFO 001 Using default escc
+2022-04-30 10:23:48.770 UTC [chaincodeCmd] checkChaincodeCmdParams -> INFO 002 Using default vscc
+2022-04-30 10:24:02.112 UTC [chaincodeCmd] install -> INFO 003 Installed remotely response:<status:200 payload:"OK" >
+===================== Chaincode is installed on peer0.registrar =====================
+
+
+----------------------------------------------------------------------------------------------
+Installing chaincodes on peer1.registrar
+----------------------------------------------------------------------------------------------
+
++ peer chaincode install -n regnet -v 1.0 -l node -p /opt/gopath/src/github.com/chaincode/node
++ res=0
++ set +x
+2022-04-30 10:24:02.599 UTC [chaincodeCmd] checkChaincodeCmdParams -> INFO 001 Using default escc
+2022-04-30 10:24:02.599 UTC [chaincodeCmd] checkChaincodeCmdParams -> INFO 002 Using default vscc
+2022-04-30 10:24:06.223 UTC [chaincodeCmd] install -> INFO 003 Installed remotely response:<status:200 payload:"OK" >
+===================== Chaincode is installed on peer1.registrar =====================
+
+
+----------------------------------------------------------------------------------------------
+Installing chaincodes on peer0.users
+----------------------------------------------------------------------------------------------
+
++ peer chaincode install -n regnet -v 1.0 -l node -p /opt/gopath/src/github.com/chaincode/node
++ res=0
++ set +x
+2022-04-30 10:24:07.169 UTC [chaincodeCmd] checkChaincodeCmdParams -> INFO 001 Using default escc
+2022-04-30 10:24:07.170 UTC [chaincodeCmd] checkChaincodeCmdParams -> INFO 002 Using default vscc
+2022-04-30 10:24:09.920 UTC [chaincodeCmd] install -> INFO 003 Installed remotely response:<status:200 payload:"OK" >
+===================== Chaincode is installed on peer0.users =====================
+
+
+----------------------------------------------------------------------------------------------
+Instantiating 'regnet' chaincode on peer0.registrar
+----------------------------------------------------------------------------------------------
+
++ peer chaincode instantiate -o orderer.property-registration-network.com:7050 --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/property-registration-network.com/orderers/orderer.property-registration-network.com/msp/tlscacerts/tlsca.property-registration-network.com-cert.pem -C property-registration-channel -n regnet -l node -v 1.0 -c '{"Args":["org.property-registration-network.regnet.registrar:instantiate"]}' -P 'OR ('\''registrarMSP.member'\'','\''usersMSP.member'\'')'
++ res=0
++ set +x
+2022-04-30 10:24:10.404 UTC [chaincodeCmd] checkChaincodeCmdParams -> INFO 001 Using default escc
+2022-04-30 10:24:10.404 UTC [chaincodeCmd] checkChaincodeCmdParams -> INFO 002 Using default vscc
+===================== Chaincode is instantiated on peer0.registrar on channel 'property-registration-channel' =====================
+
+
+========= All GOOD, pankaj_property_registration_network installation and instantiation completed ===========
+
+Channel name : property-registration-channel
+
+----------------------------------------------------------------------------------------------
+Executing Use Cases
+----------------------------------------------------------------------------------------------
+
+
+----------------------------------------------------------------------------------------------
+Invoking requestNewUser for user: Pankaj Mahadik and 8844 4455 6677 - (executing on peer0.users)
+----------------------------------------------------------------------------------------------
+
+{"Args":["org.property-registration-network.regnet.users:requestNewUser","Pankaj Mahadik","8844 4455 6677","mahadikpankaj@gmail.com","9890787870"]}
++ peer chaincode invoke -o orderer.property-registration-network.com:7050 --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/property-registration-network.com/orderers/orderer.property-registration-network.com/msp/tlscacerts/tlsca.property-registration-network.com-cert.pem -C property-registration-channel -n regnet --peerAddresses peer0.users.property-registration-network.com:9051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/users.property-registration-network.com/peers/peer0.users.property-registration-network.com/tls/ca.crt -c '{"Args":["org.property-registration-network.regnet.users:requestNewUser","Pankaj Mahadik","8844 4455 6677","mahadikpankaj@gmail.com","9890787870"]}'
++ res=0
++ set +x
+2022-04-30 10:31:46.831 UTC [chaincodeCmd] chaincodeInvokeOrQuery -> INFO 001 Chaincode invoke successful. result: status:200 payload:"{\"class\":\"org.property-registration-network.regnet.models.request\",\"key\":\"PANKAJMAHADIK-884444556677\",\"currentState\":null,\"name\":\"Pankaj Mahadik\",\"aadharNumber\":\"884444556677\",\"email\":\"mahadikpankaj@gmail.com\",\"phone\":\"9890787870\",\"createdAt\":\"2022-04-30T10:31:46.808Z\",\"requestType\":\"user\"}"
+===================== Invoke transaction successful on peer0.users on channel 'property-registration-channel' =====================
+
+
+----------------------------------------------------------------------------------------------
+Querying Request object for user: Pankaj Mahadik and 8844 4455 6677 - (executing on peer0.users)
+----------------------------------------------------------------------------------------------
+
+===================== Querying on peer0.users on channel 'property-registration-channel'... =====================
+Attempting to Query peer0.users ...5 secs
++ C_PARAMETER='{"Args":["org.property-registration-network.regnet.users:getUserRegistrationRequest","Pankaj Mahadik","8844 4455 6677"]}'
++ peer chaincode query -C property-registration-channel -n regnet -c '{"Args":["org.property-registration-network.regnet.users:getUserRegistrationRequest","Pankaj Mahadik","8844 4455 6677"]}'
++ res=0
++ set +x
+Actual Value for email:  "mahadikpankaj@gmail.com"
+Expected Value for email:  "mahadikpankaj@gmail.com"
+{"aadharNumber":"884444556677","class":"org.property-registration-network.regnet.models.request","createdAt":"2022-04-30T10:31:46.808Z","currentState":null,"email":"mahadikpankaj@gmail.com","key":"PANKAJMAHADIK-884444556677","name":"Pankaj Mahadik","phone":"9890787870","requestType":"user"}
+===================== Query successful on peer0.users on channel 'property-registration-channel' =====================
+
+----------------------------------------------------------------------------------------------
+Invoking requestNewUser for user: Aakash Bansal and 1122 3344 5566 - (executing on peer0.users)
+----------------------------------------------------------------------------------------------
+
+{"Args":["org.property-registration-network.regnet.users:requestNewUser","Aakash Bansal","1122 3344 5566","aakashbansal@gmail.com","8523698741"]}
++ peer chaincode invoke -o orderer.property-registration-network.com:7050 --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/property-registration-network.com/orderers/orderer.property-registration-network.com/msp/tlscacerts/tlsca.property-registration-network.com-cert.pem -C property-registration-channel -n regnet --peerAddresses peer0.users.property-registration-network.com:9051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/users.property-registration-network.com/peers/peer0.users.property-registration-network.com/tls/ca.crt -c '{"Args":["org.property-registration-network.regnet.users:requestNewUser","Aakash Bansal","1122 3344 5566","aakashbansal@gmail.com","8523698741"]}'
++ res=0
++ set +x
+2022-04-30 10:32:04.983 UTC [chaincodeCmd] chaincodeInvokeOrQuery -> INFO 001 Chaincode invoke successful. result: status:200 payload:"{\"class\":\"org.property-registration-network.regnet.models.request\",\"key\":\"AAKASHBANSAL-112233445566\",\"currentState\":null,\"name\":\"Aakash Bansal\",\"aadharNumber\":\"112233445566\",\"email\":\"aakashbansal@gmail.com\",\"phone\":\"8523698741\",\"createdAt\":\"2022-04-30T10:32:04.969Z\",\"requestType\":\"user\"}"
+===================== Invoke transaction successful on peer0.users on channel 'property-registration-channel' =====================
+
+
+----------------------------------------------------------------------------------------------
+Querying Request object for user: Aakash Bansal and 1122 3344 5566 - (executing on peer0.users)
+----------------------------------------------------------------------------------------------
+
+===================== Querying on peer0.users on channel 'property-registration-channel'... =====================
+Attempting to Query peer0.users ...6 secs
++ C_PARAMETER='{"Args":["org.property-registration-network.regnet.users:getUserRegistrationRequest","Aakash Bansal","1122 3344 5566"]}'
++ peer chaincode query -C property-registration-channel -n regnet -c '{"Args":["org.property-registration-network.regnet.users:getUserRegistrationRequest","Aakash Bansal","1122 3344 5566"]}'
++ res=0
++ set +x
+Actual Value for email:  "aakashbansal@gmail.com"
+Expected Value for email:  "aakashbansal@gmail.com"
+{"aadharNumber":"112233445566","class":"org.property-registration-network.regnet.models.request","createdAt":"2022-04-30T10:32:04.969Z","currentState":null,"email":"aakashbansal@gmail.com","key":"AAKASHBANSAL-112233445566","name":"Aakash Bansal","phone":"8523698741","requestType":"user"}
+===================== Query successful on peer0.users on channel 'property-registration-channel' =====================
+
+----------------------------------------------------------------------------------------------
+Querying all User Registration Requests - (executing on peer0.registrar)
+----------------------------------------------------------------------------------------------
+
+===================== Querying on peer0.registrar on channel 'property-registration-channel'... =====================
+Attempting to Query peer0.registrar ...5 secs
++ C_PARAMETER='{"Args":["org.property-registration-network.regnet.users:getAllUserRegistrationRequests"]}'
++ peer chaincode query -C property-registration-channel -n regnet -c '{"Args":["org.property-registration-network.regnet.users:getAllUserRegistrationRequests"]}'
++ res=0
++ set +x
+["{\"aadharNumber\":\"112233445566\",\"class\":\"org.property-registration-network.regnet.models.request\",\"createdAt\":\"2022-04-30T10:32:04.969Z\",\"currentState\":null,\"email\":\"aakashbansal@gmail.com\",\"key\":\"AAKASHBANSAL-112233445566\",\"name\":\"Aakash Bansal\",\"phone\":\"8523698741\",\"requestType\":\"user\"}","{\"aadharNumber\":\"884444556677\",\"class\":\"org.property-registration-network.regnet.models.request\",\"createdAt\":\"2022-04-30T10:31:46.808Z\",\"currentState\":null,\"email\":\"mahadikpankaj@gmail.com\",\"key\":\"PANKAJMAHADIK-884444556677\",\"name\":\"Pankaj Mahadik\",\"phone\":\"9890787870\",\"requestType\":\"user\"}"]
+===================== Query successful on peer0.registrar on channel 'property-registration-channel' =====================
+
+----------------------------------------------------------------------------------------------
+Approving User Registration Request for user: Pankaj Mahadik and 8844 4455 6677 - (executing on peer0.registrar)
+----------------------------------------------------------------------------------------------
+
++ peer chaincode invoke -o orderer.property-registration-network.com:7050 --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/property-registration-network.com/orderers/orderer.property-registration-network.com/msp/tlscacerts/tlsca.property-registration-network.com-cert.pem -C property-registration-channel -n regnet --peerAddresses peer0.registrar.property-registration-network.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/registrar.property-registration-network.com/peers/peer0.registrar.property-registration-network.com/tls/ca.crt -c '{"Args":["org.property-registration-network.regnet.registrar:approveNewUser","Pankaj Mahadik","8844 4455 6677"]}'
+{"Args":["org.property-registration-network.regnet.registrar:approveNewUser","Pankaj Mahadik","8844 4455 6677"]}
++ res=0
++ set +x
+2022-04-30 10:32:34.060 UTC [chaincodeCmd] chaincodeInvokeOrQuery -> INFO 001 Chaincode invoke successful. result: status:200 payload:"{\"class\":\"org.property-registration-network.regnet.models.user\",\"key\":\"PANKAJMAHADIK-884444556677\",\"currentState\":null,\"name\":\"Pankaj Mahadik\",\"aadharNumber\":\"884444556677\",\"email\":\"mahadikpankaj@gmail.com\",\"phone\":\"9890787870\",\"requestedAt\":\"2022-04-30T10:31:46.808Z\",\"approvedAt\":\"2022-04-30T10:32:34.039Z\",\"upgradCoins\":\"0\"}"
+===================== Invoke transaction successful on peer0.registrar on channel 'property-registration-channel' =====================
+
+
+----------------------------------------------------------------------------------------------
+Query the User object to verify is created for user: Pankaj Mahadik and 8844 4455 6677 - (executing on peer1.registrar)
+----------------------------------------------------------------------------------------------
+
+===================== Querying on peer1.registrar on channel 'property-registration-channel'... =====================
++ C_PARAMETER='{"Args":["org.property-registration-network.regnet.users:viewUser","Pankaj Mahadik","8844 4455 6677"]}'
++ peer chaincode query -C property-registration-channel -n regnet -c '{"Args":["org.property-registration-network.regnet.users:viewUser","Pankaj Mahadik","8844 4455 6677"]}'
+Attempting to Query peer1.registrar ...5 secs
++ res=0
++ set +x
+Actual Value for email:  "mahadikpankaj@gmail.com"
+Expected Value for email:  "mahadikpankaj@gmail.com"
+{"class":"org.property-registration-network.regnet.models.user","key":"PANKAJMAHADIK-884444556677","currentState":null,"aadharNumber":"884444556677","approvedAt":"2022-04-30T10:32:34.039Z","email":"mahadikpankaj@gmail.com","name":"Pankaj Mahadik","phone":"9890787870","requestedAt":"2022-04-30T10:31:46.808Z","upgradCoins":"0"}
+===================== Query successful on peer1.registrar on channel 'property-registration-channel' =====================
+
+----------------------------------------------------------------------------------------------
+Approving User Registration Request for user: Aakash Bansal and 1122 3344 5566 - (executing on peer1.registrar)
+----------------------------------------------------------------------------------------------
+
+{"Args":["org.property-registration-network.regnet.registrar:approveNewUser","Aakash Bansal","1122 3344 5566"]}
++ peer chaincode invoke -o orderer.property-registration-network.com:7050 --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/property-registration-network.com/orderers/orderer.property-registration-network.com/msp/tlscacerts/tlsca.property-registration-network.com-cert.pem -C property-registration-channel -n regnet --peerAddresses peer1.registrar.property-registration-network.com:8051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/registrar.property-registration-network.com/peers/peer1.registrar.property-registration-network.com/tls/ca.crt -c '{"Args":["org.property-registration-network.regnet.registrar:approveNewUser","Aakash Bansal","1122 3344 5566"]}'
++ res=0
++ set +x
+2022-04-30 10:35:42.741 UTC [chaincodeCmd] chaincodeInvokeOrQuery -> INFO 001 Chaincode invoke successful. result: status:200 payload:"{\"class\":\"org.property-registration-network.regnet.models.user\",\"key\":\"AAKASHBANSAL-112233445566\",\"currentState\":null,\"name\":\"Aakash Bansal\",\"aadharNumber\":\"112233445566\",\"email\":\"aakashbansal@gmail.com\",\"phone\":\"8523698741\",\"requestedAt\":\"2022-04-30T10:32:04.969Z\",\"approvedAt\":\"2022-04-30T10:35:42.725Z\",\"upgradCoins\":\"0\"}"
+===================== Invoke transaction successful on Peer1.registrar on channel 'property-registration-channel' =====================
+
+
+----------------------------------------------------------------------------------------------
+Query the User object to verify is created for user: Aakash Bansal and 1122 3344 5566 - (executing on peer0.registrar)
+----------------------------------------------------------------------------------------------
+
+===================== Querying on peer0.registrar on channel 'property-registration-channel'... =====================
+Attempting to Query peer0.registrar ...5 secs
++ C_PARAMETER='{"Args":["org.property-registration-network.regnet.users:viewUser","Aakash Bansal","1122 3344 5566"]}'
++ peer chaincode query -C property-registration-channel -n regnet -c '{"Args":["org.property-registration-network.regnet.users:viewUser","Aakash Bansal","1122 3344 5566"]}'
++ res=0
++ set +x
+Actual Value for email:  "aakashbansal@gmail.com"
+Expected Value for email:  "aakashbansal@gmail.com"
+{"class":"org.property-registration-network.regnet.models.user","key":"AAKASHBANSAL-112233445566","currentState":null,"aadharNumber":"112233445566","approvedAt":"2022-04-30T10:35:42.725Z","email":"aakashbansal@gmail.com","name":"Aakash Bansal","phone":"8523698741","requestedAt":"2022-04-30T10:32:04.969Z","upgradCoins":"0"}
+===================== Query successful on peer0.registrar on channel 'property-registration-channel' =====================
+
+----------------------------------------------------------------------------------------------
+Query all Users in the system - (executing on peer0.users)
+----------------------------------------------------------------------------------------------
+
+===================== Querying on peer0.users on channel 'property-registration-channel'... =====================
++ C_PARAMETER='{"Args":["org.property-registration-network.regnet.users:getAllUsers"]}'
++ peer chaincode query -C property-registration-channel -n regnet -c '{"Args":["org.property-registration-network.regnet.users:getAllUsers"]}'
+Attempting to Query peer0.users ...5 secs
++ res=0
++ set +x
+["{\"aadharNumber\":\"112233445566\",\"approvedAt\":\"2022-04-30T10:35:42.725Z\",\"class\":\"org.property-registration-network.regnet.models.user\",\"currentState\":null,\"email\":\"aakashbansal@gmail.com\",\"key\":\"AAKASHBANSAL-112233445566\",\"name\":\"Aakash Bansal\",\"phone\":\"8523698741\",\"requestedAt\":\"2022-04-30T10:32:04.969Z\",\"upgradCoins\":\"0\"}","{\"aadharNumber\":\"884444556677\",\"approvedAt\":\"2022-04-30T10:32:34.039Z\",\"class\":\"org.property-registration-network.regnet.models.user\",\"currentState\":null,\"email\":\"mahadikpankaj@gmail.com\",\"key\":\"PANKAJMAHADIK-884444556677\",\"name\":\"Pankaj Mahadik\",\"phone\":\"9890787870\",\"requestedAt\":\"2022-04-30T10:31:46.808Z\",\"upgradCoins\":\"0\"}"]
+===================== Query successful on peer0.users on channel 'property-registration-channel' =====================
+
+----------------------------------------------------------------------------------------------
+Create Property Registration request for PropertyId: 1, user: Pankaj Mahadik and 8844 4455 6677 - (executing on peer0.users)
+----------------------------------------------------------------------------------------------
+
+{"Args":["org.property-registration-network.regnet.users:propertyRegistrationRequest","Pankaj Mahadik","8844 4455 6677","1","1000"]}
++ peer chaincode invoke -o orderer.property-registration-network.com:7050 --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/property-registration-network.com/orderers/orderer.property-registration-network.com/msp/tlscacerts/tlsca.property-registration-network.com-cert.pem -C property-registration-channel -n regnet --peerAddresses peer0.users.property-registration-network.com:9051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/users.property-registration-network.com/peers/peer0.users.property-registration-network.com/tls/ca.crt -c '{"Args":["org.property-registration-network.regnet.users:propertyRegistrationRequest","Pankaj Mahadik","8844 4455 6677","1","1000"]}'
++ res=0
++ set +x
+2022-04-30 10:36:10.128 UTC [chaincodeCmd] chaincodeInvokeOrQuery -> INFO 001 Chaincode invoke successful. result: status:200 payload:"{\"class\":\"org.property-registration-network.regnet.models.request\",\"key\":\"1\",\"currentState\":null,\"propertyId\":\"1\",\"owner\":\"PANKAJMAHADIK-884444556677\",\"price\":\"1000\",\"status\":\"registered\",\"createdAt\":\"2022-04-30T10:36:09.726Z\",\"requestType\":\"property\"}"
+===================== Invoke transaction successful on peer0.users on channel 'property-registration-channel' =====================
+
+
+----------------------------------------------------------------------------------------------
+Verify the property registration request created correctly for PropertyId: 1 - (executing on peer0.registrar)
+----------------------------------------------------------------------------------------------
+
+===================== Querying on peer0.registrar on channel 'property-registration-channel'... =====================
+Attempting to Query peer0.registrar ...5 secs
++ C_PARAMETER='{"Args":["org.property-registration-network.regnet.users:getPropertyRegistrationRequest","1"]}'
++ peer chaincode query -C property-registration-channel -n regnet -c '{"Args":["org.property-registration-network.regnet.users:getPropertyRegistrationRequest","1"]}'
++ res=0
++ set +x
+Actual Value for owner:  "PANKAJMAHADIK-884444556677"
+Expected Value for owner:  "PANKAJMAHADIK-884444556677"
+{"class":"org.property-registration-network.regnet.models.request","createdAt":"2022-04-30T10:36:09.726Z","currentState":null,"key":"1","owner":"PANKAJMAHADIK-884444556677","price":"1000","propertyId":"1","requestType":"property","status":"registered"}
+===================== Query successful on peer0.registrar on channel 'property-registration-channel' =====================
+
+----------------------------------------------------------------------------------------------
+Approve Property registration request for PropertyId: 1 - (executing on peer0.registrar)
+----------------------------------------------------------------------------------------------
+
+{"Args":["org.property-registration-network.regnet.registrar:approvePropertyRegistration","1"]}
++ peer chaincode invoke -o orderer.property-registration-network.com:7050 --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/property-registration-network.com/orderers/orderer.property-registration-network.com/msp/tlscacerts/tlsca.property-registration-network.com-cert.pem -C property-registration-channel -n regnet --peerAddresses peer0.registrar.property-registration-network.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/registrar.property-registration-network.com/peers/peer0.registrar.property-registration-network.com/tls/ca.crt -c '{"Args":["org.property-registration-network.regnet.registrar:approvePropertyRegistration","1"]}'
++ res=0
++ set +x
+2022-04-30 10:36:26.688 UTC [chaincodeCmd] chaincodeInvokeOrQuery -> INFO 001 Chaincode invoke successful. result: status:200 payload:"{\"class\":\"org.property-registration-network.regnet.models.property\",\"key\":\"1\",\"currentState\":null,\"propertyId\":\"1\",\"owner\":\"PANKAJMAHADIK-884444556677\",\"price\":\"1000\",\"status\":\"registered\",\"requestedAt\":\"2022-04-30T10:36:09.726Z\",\"approvedAt\":\"2022-04-30T10:36:26.467Z\"}"
+===================== Invoke transaction successful on peer0.registrar on channel 'property-registration-channel' =====================
+
+
+----------------------------------------------------------------------------------------------
+Verify the property object created correctly for PropertyId: 1 - (executing on peer0.users)
+----------------------------------------------------------------------------------------------
+
+===================== Querying on peer0.users on channel 'property-registration-channel'... =====================
++ C_PARAMETER='{"Args":["org.property-registration-network.regnet.users:viewProperty","1"]}'
++ peer chaincode query -C property-registration-channel -n regnet -c '{"Args":["org.property-registration-network.regnet.users:viewProperty","1"]}'
+Attempting to Query peer0.users ...5 secs
++ res=0
++ set +x
+Actual Value for owner:  "PANKAJMAHADIK-884444556677"
+Expected Value for owner:  "PANKAJMAHADIK-884444556677"
+{"class":"org.property-registration-network.regnet.models.property","key":"1","currentState":null,"approvedAt":"2022-04-30T10:36:26.467Z","owner":"PANKAJMAHADIK-884444556677","price":"1000","propertyId":"1","requestedAt":"2022-04-30T10:36:09.726Z","status":"registered"}
+===================== Query successful on peer0.users on channel 'property-registration-channel' =====================
+
+----------------------------------------------------------------------------------------------
+Create Property Registration request for PropertyId: 2, user: Aakash Bansal and 1122 3344 5566 - (executing on peer0.users)
+----------------------------------------------------------------------------------------------
+
+{"Args":["org.property-registration-network.regnet.users:propertyRegistrationRequest","Aakash Bansal","1122 3344 5566","2","800"]}
++ peer chaincode invoke -o orderer.property-registration-network.com:7050 --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/property-registration-network.com/orderers/orderer.property-registration-network.com/msp/tlscacerts/tlsca.property-registration-network.com-cert.pem -C property-registration-channel -n regnet --peerAddresses peer0.users.property-registration-network.com:9051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/users.property-registration-network.com/peers/peer0.users.property-registration-network.com/tls/ca.crt -c '{"Args":["org.property-registration-network.regnet.users:propertyRegistrationRequest","Aakash Bansal","1122 3344 5566","2","800"]}'
++ res=0
++ set +x
+2022-04-30 10:36:43.829 UTC [chaincodeCmd] chaincodeInvokeOrQuery -> INFO 001 Chaincode invoke successful. result: status:200 payload:"{\"class\":\"org.property-registration-network.regnet.models.request\",\"key\":\"2\",\"currentState\":null,\"propertyId\":\"2\",\"owner\":\"AAKASHBANSAL-112233445566\",\"price\":\"800\",\"status\":\"registered\",\"createdAt\":\"2022-04-30T10:36:43.818Z\",\"requestType\":\"property\"}"
+===================== Invoke transaction successful on peer0.users on channel 'property-registration-channel' =====================
+
+
+----------------------------------------------------------------------------------------------
+Verify the property registration request created correctly for PropertyId: 2 - (executing on peer1.registrar)
+----------------------------------------------------------------------------------------------
+
+===================== Querying on peer1.registrar on channel 'property-registration-channel'... =====================
+Attempting to Query peer1.registrar ...5 secs
++ C_PARAMETER='{"Args":["org.property-registration-network.regnet.users:getPropertyRegistrationRequest","2"]}'
++ peer chaincode query -C property-registration-channel -n regnet -c '{"Args":["org.property-registration-network.regnet.users:getPropertyRegistrationRequest","2"]}'
++ res=0
++ set +x
+Actual Value for owner:  "AAKASHBANSAL-112233445566"
+Expected Value for owner:  "AAKASHBANSAL-112233445566"
+{"class":"org.property-registration-network.regnet.models.request","createdAt":"2022-04-30T10:36:43.818Z","currentState":null,"key":"2","owner":"AAKASHBANSAL-112233445566","price":"800","propertyId":"2","requestType":"property","status":"registered"}
+===================== Query successful on peer1.registrar on channel 'property-registration-channel' =====================
+
+----------------------------------------------------------------------------------------------
+Approve Property registration request for PropertyId: 2 - (executing on peer1.registrar)
+----------------------------------------------------------------------------------------------
+
+{"Args":["org.property-registration-network.regnet.registrar:approvePropertyRegistration","2"]}
++ peer chaincode invoke -o orderer.property-registration-network.com:7050 --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/property-registration-network.com/orderers/orderer.property-registration-network.com/msp/tlscacerts/tlsca.property-registration-network.com-cert.pem -C property-registration-channel -n regnet --peerAddresses peer1.registrar.property-registration-network.com:8051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/registrar.property-registration-network.com/peers/peer1.registrar.property-registration-network.com/tls/ca.crt -c '{"Args":["org.property-registration-network.regnet.registrar:approvePropertyRegistration","2"]}'
++ res=0
++ set +x
+2022-04-30 10:36:59.969 UTC [chaincodeCmd] chaincodeInvokeOrQuery -> INFO 001 Chaincode invoke successful. result: status:200 payload:"{\"class\":\"org.property-registration-network.regnet.models.property\",\"key\":\"2\",\"currentState\":null,\"propertyId\":\"2\",\"owner\":\"AAKASHBANSAL-112233445566\",\"price\":\"800\",\"status\":\"registered\",\"requestedAt\":\"2022-04-30T10:36:43.818Z\",\"approvedAt\":\"2022-04-30T10:36:59.953Z\"}"
+===================== Invoke transaction successful on peer1.registrar on channel 'property-registration-channel' =====================
+
+
+----------------------------------------------------------------------------------------------
+Verify the property object created correctly for PropertyId: 2 - (executing on peer0.users)
+----------------------------------------------------------------------------------------------
+
+===================== Querying on peer0.users on channel 'property-registration-channel'... =====================
+Attempting to Query peer0.users ...5 secs
++ C_PARAMETER='{"Args":["org.property-registration-network.regnet.users:viewProperty","2"]}'
++ peer chaincode query -C property-registration-channel -n regnet -c '{"Args":["org.property-registration-network.regnet.users:viewProperty","2"]}'
++ res=0
++ set +x
+Actual Value for owner:  "AAKASHBANSAL-112233445566"
+Expected Value for owner:  "AAKASHBANSAL-112233445566"
+{"class":"org.property-registration-network.regnet.models.property","key":"2","currentState":null,"approvedAt":"2022-04-30T10:36:59.953Z","owner":"AAKASHBANSAL-112233445566","price":"800","propertyId":"2","requestedAt":"2022-04-30T10:36:43.818Z","status":"registered"}
+===================== Query successful on peer0.users on channel 'property-registration-channel' =====================
+
+----------------------------------------------------------------------------------------------
+Query all Properties - (executing on peer0.users)
+----------------------------------------------------------------------------------------------
+
+===================== Querying on peer0.users on channel 'property-registration-channel'... =====================
+Attempting to Query peer0.users ...5 secs
++ C_PARAMETER='{"Args":["org.property-registration-network.regnet.users:getAllProperties"]}'
++ peer chaincode query -C property-registration-channel -n regnet -c '{"Args":["org.property-registration-network.regnet.users:getAllProperties"]}'
++ res=0
++ set +x
+["{\"approvedAt\":\"2022-04-30T10:36:26.467Z\",\"class\":\"org.property-registration-network.regnet.models.property\",\"currentState\":null,\"key\":\"1\",\"owner\":\"PANKAJMAHADIK-884444556677\",\"price\":\"1000\",\"propertyId\":\"1\",\"requestedAt\":\"2022-04-30T10:36:09.726Z\",\"status\":\"registered\"}","{\"approvedAt\":\"2022-04-30T10:36:59.953Z\",\"class\":\"org.property-registration-network.regnet.models.property\",\"currentState\":null,\"key\":\"2\",\"owner\":\"AAKASHBANSAL-112233445566\",\"price\":\"800\",\"propertyId\":\"2\",\"requestedAt\":\"2022-04-30T10:36:43.818Z\",\"status\":\"registered\"}"]
+===================== Query successful on peer0.users on channel 'property-registration-channel' =====================
+
+----------------------------------------------------------------------------------------------
+Invoke rechargeAccount of upg100 for user: Pankaj Mahadik and 8844 4455 6677 - (executing on peer0.users)
+----------------------------------------------------------------------------------------------
+
++ peer chaincode invoke -o orderer.property-registration-network.com:7050 --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/property-registration-network.com/orderers/orderer.property-registration-network.com/msp/tlscacerts/tlsca.property-registration-network.com-cert.pem -C property-registration-channel -n regnet --peerAddresses peer0.users.property-registration-network.com:9051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/users.property-registration-network.com/peers/peer0.users.property-registration-network.com/tls/ca.crt -c '{"Args":["org.property-registration-network.regnet.users:rechargeAccount","Pankaj Mahadik","8844 4455 6677","upg100"]}'
+{"Args":["org.property-registration-network.regnet.users:rechargeAccount","Pankaj Mahadik","8844 4455 6677","upg100"]}
++ res=0
++ set +x
+2022-04-30 10:37:26.546 UTC [chaincodeCmd] chaincodeInvokeOrQuery -> INFO 001 Chaincode invoke successful. result: status:200 payload:"{\"class\":\"org.property-registration-network.regnet.models.user\",\"key\":\"PANKAJMAHADIK-884444556677\",\"currentState\":null,\"aadharNumber\":\"884444556677\",\"approvedAt\":\"2022-04-30T10:32:34.039Z\",\"email\":\"mahadikpankaj@gmail.com\",\"name\":\"Pankaj Mahadik\",\"phone\":\"9890787870\",\"requestedAt\":\"2022-04-30T10:31:46.808Z\",\"upgradCoins\":\"100\"}"
+===================== Invoke transaction successful on peer0.users on channel 'property-registration-channel' =====================
+
+
+----------------------------------------------------------------------------------------------
+Verify balance amount of 100 for user: Pankaj Mahadik and 8844 4455 6677 - (executing on peer0.registrar)
+----------------------------------------------------------------------------------------------
+
+===================== Querying on peer0.registrar on channel 'property-registration-channel'... =====================
+Attempting to Query peer0.registrar ...5 secs
++ C_PARAMETER='{"Args":["org.property-registration-network.regnet.users:viewUser","Pankaj Mahadik","8844 4455 6677"]}'
++ peer chaincode query -C property-registration-channel -n regnet -c '{"Args":["org.property-registration-network.regnet.users:viewUser","Pankaj Mahadik","8844 4455 6677"]}'
++ res=0
++ set +x
+Actual Value for upgradCoins:  "100"
+Expected Value for upgradCoins:  "100"
+{"class":"org.property-registration-network.regnet.models.user","key":"PANKAJMAHADIK-884444556677","currentState":null,"aadharNumber":"884444556677","approvedAt":"2022-04-30T10:32:34.039Z","email":"mahadikpankaj@gmail.com","name":"Pankaj Mahadik","phone":"9890787870","requestedAt":"2022-04-30T10:31:46.808Z","upgradCoins":"100"}
+===================== Query successful on peer0.registrar on channel 'property-registration-channel' =====================
+
+----------------------------------------------------------------------------------------------
+Invoke rechargeAccount of upg500 for user: Pankaj Mahadik and 8844 4455 6677 - (executing on peer0.users)
+----------------------------------------------------------------------------------------------
+
+{"Args":["org.property-registration-network.regnet.users:rechargeAccount","Pankaj Mahadik","8844 4455 6677","upg500"]}
++ peer chaincode invoke -o orderer.property-registration-network.com:7050 --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/property-registration-network.com/orderers/orderer.property-registration-network.com/msp/tlscacerts/tlsca.property-registration-network.com-cert.pem -C property-registration-channel -n regnet --peerAddresses peer0.users.property-registration-network.com:9051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/users.property-registration-network.com/peers/peer0.users.property-registration-network.com/tls/ca.crt -c '{"Args":["org.property-registration-network.regnet.users:rechargeAccount","Pankaj Mahadik","8844 4455 6677","upg500"]}'
++ res=0
++ set +x
+2022-04-30 10:37:42.729 UTC [chaincodeCmd] chaincodeInvokeOrQuery -> INFO 001 Chaincode invoke successful. result: status:200 payload:"{\"class\":\"org.property-registration-network.regnet.models.user\",\"key\":\"PANKAJMAHADIK-884444556677\",\"currentState\":null,\"aadharNumber\":\"884444556677\",\"approvedAt\":\"2022-04-30T10:32:34.039Z\",\"email\":\"mahadikpankaj@gmail.com\",\"name\":\"Pankaj Mahadik\",\"phone\":\"9890787870\",\"requestedAt\":\"2022-04-30T10:31:46.808Z\",\"upgradCoins\":\"600\"}"
+===================== Invoke transaction successful on peer0.users on channel 'property-registration-channel' =====================
+
+
+----------------------------------------------------------------------------------------------
+Verify balance amount of 600 for user: Pankaj Mahadik and 8844 4455 6677 - (executing on peer1.registrar)
+----------------------------------------------------------------------------------------------
+
+===================== Querying on peer1.registrar on channel 'property-registration-channel'... =====================
+Attempting to Query peer1.registrar ...5 secs
++ C_PARAMETER='{"Args":["org.property-registration-network.regnet.users:viewUser","Pankaj Mahadik","8844 4455 6677"]}'
++ peer chaincode query -C property-registration-channel -n regnet -c '{"Args":["org.property-registration-network.regnet.users:viewUser","Pankaj Mahadik","8844 4455 6677"]}'
++ res=0
++ set +x
+Actual Value for upgradCoins:  "600"
+Expected Value for upgradCoins:  "600"
+{"class":"org.property-registration-network.regnet.models.user","key":"PANKAJMAHADIK-884444556677","currentState":null,"aadharNumber":"884444556677","approvedAt":"2022-04-30T10:32:34.039Z","email":"mahadikpankaj@gmail.com","name":"Pankaj Mahadik","phone":"9890787870","requestedAt":"2022-04-30T10:31:46.808Z","upgradCoins":"600"}
+===================== Query successful on peer1.registrar on channel 'property-registration-channel' =====================
+
+----------------------------------------------------------------------------------------------
+Invoke rechargeAccount of upg1000 for user: Pankaj Mahadik and 8844 4455 6677 - (executing on peer0.users)
+----------------------------------------------------------------------------------------------
+
++ peer chaincode invoke -o orderer.property-registration-network.com:7050 --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/property-registration-network.com/orderers/orderer.property-registration-network.com/msp/tlscacerts/tlsca.property-registration-network.com-cert.pem -C property-registration-channel -n regnet --peerAddresses peer0.users.property-registration-network.com:9051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/users.property-registration-network.com/peers/peer0.users.property-registration-network.com/tls/ca.crt -c '{"Args":["org.property-registration-network.regnet.users:rechargeAccount","Pankaj Mahadik","8844 4455 6677","upg1000"]}'
+{"Args":["org.property-registration-network.regnet.users:rechargeAccount","Pankaj Mahadik","8844 4455 6677","upg1000"]}
++ res=0
++ set +x
+2022-04-30 10:37:58.775 UTC [chaincodeCmd] chaincodeInvokeOrQuery -> INFO 001 Chaincode invoke successful. result: status:200 payload:"{\"class\":\"org.property-registration-network.regnet.models.user\",\"key\":\"PANKAJMAHADIK-884444556677\",\"currentState\":null,\"aadharNumber\":\"884444556677\",\"approvedAt\":\"2022-04-30T10:32:34.039Z\",\"email\":\"mahadikpankaj@gmail.com\",\"name\":\"Pankaj Mahadik\",\"phone\":\"9890787870\",\"requestedAt\":\"2022-04-30T10:31:46.808Z\",\"upgradCoins\":\"1600\"}"
+===================== Invoke transaction successful on peer0.users on channel 'property-registration-channel' =====================
+
+
+----------------------------------------------------------------------------------------------
+Verify balance amount of 1600 for user: Pankaj Mahadik and 8844 4455 6677 - (executing on peer0.users)
+----------------------------------------------------------------------------------------------
+
+===================== Querying on peer0.users on channel 'property-registration-channel'... =====================
++ C_PARAMETER='{"Args":["org.property-registration-network.regnet.users:viewUser","Pankaj Mahadik","8844 4455 6677"]}'
++ peer chaincode query -C property-registration-channel -n regnet -c '{"Args":["org.property-registration-network.regnet.users:viewUser","Pankaj Mahadik","8844 4455 6677"]}'
+Attempting to Query peer0.users ...5 secs
++ res=0
++ set +x
+Actual Value for upgradCoins:  "1600"
+Expected Value for upgradCoins:  "1600"
+{"class":"org.property-registration-network.regnet.models.user","key":"PANKAJMAHADIK-884444556677","currentState":null,"aadharNumber":"884444556677","approvedAt":"2022-04-30T10:32:34.039Z","email":"mahadikpankaj@gmail.com","name":"Pankaj Mahadik","phone":"9890787870","requestedAt":"2022-04-30T10:31:46.808Z","upgradCoins":"1600"}
+===================== Query successful on peer0.users on channel 'property-registration-channel' =====================
+
+----------------------------------------------------------------------------------------------
+Invoke rechargeAccount of upg100 for user: Aakash Bansal and 1122 3344 5566 - (executing on peer0.users)
+----------------------------------------------------------------------------------------------
+
+{"Args":["org.property-registration-network.regnet.users:rechargeAccount","Aakash Bansal","1122 3344 5566","upg100"]}
++ peer chaincode invoke -o orderer.property-registration-network.com:7050 --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/property-registration-network.com/orderers/orderer.property-registration-network.com/msp/tlscacerts/tlsca.property-registration-network.com-cert.pem -C property-registration-channel -n regnet --peerAddresses peer0.users.property-registration-network.com:9051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/users.property-registration-network.com/peers/peer0.users.property-registration-network.com/tls/ca.crt -c '{"Args":["org.property-registration-network.regnet.users:rechargeAccount","Aakash Bansal","1122 3344 5566","upg100"]}'
++ res=0
++ set +x
+2022-04-30 10:38:14.819 UTC [chaincodeCmd] chaincodeInvokeOrQuery -> INFO 001 Chaincode invoke successful. result: status:200 payload:"{\"class\":\"org.property-registration-network.regnet.models.user\",\"key\":\"AAKASHBANSAL-112233445566\",\"currentState\":null,\"aadharNumber\":\"112233445566\",\"approvedAt\":\"2022-04-30T10:35:42.725Z\",\"email\":\"aakashbansal@gmail.com\",\"name\":\"Aakash Bansal\",\"phone\":\"8523698741\",\"requestedAt\":\"2022-04-30T10:32:04.969Z\",\"upgradCoins\":\"100\"}"
+===================== Invoke transaction successful on peer0.users on channel 'property-registration-channel' =====================
+
+
+----------------------------------------------------------------------------------------------
+Verify balance amount of 100 for user: Aakash Bansal and 1122 3344 5566 - (executing on peer1.registrar)
+----------------------------------------------------------------------------------------------
+
+===================== Querying on peer1.registrar on channel 'property-registration-channel'... =====================
+Attempting to Query peer1.registrar ...5 secs
++ C_PARAMETER='{"Args":["org.property-registration-network.regnet.users:viewUser","Aakash Bansal","1122 3344 5566"]}'
++ peer chaincode query -C property-registration-channel -n regnet -c '{"Args":["org.property-registration-network.regnet.users:viewUser","Aakash Bansal","1122 3344 5566"]}'
++ res=0
++ set +x
+Actual Value for upgradCoins:  "100"
+Expected Value for upgradCoins:  "100"
+{"class":"org.property-registration-network.regnet.models.user","key":"AAKASHBANSAL-112233445566","currentState":null,"aadharNumber":"112233445566","approvedAt":"2022-04-30T10:35:42.725Z","email":"aakashbansal@gmail.com","name":"Aakash Bansal","phone":"8523698741","requestedAt":"2022-04-30T10:32:04.969Z","upgradCoins":"100"}
+===================== Query successful on peer1.registrar on channel 'property-registration-channel' =====================
+
+----------------------------------------------------------------------------------------------
+Invoke rechargeAccount of upg1000 for user: Aakash Bansal and 1122 3344 5566 - (executing on peer0.users)
+----------------------------------------------------------------------------------------------
+
+{"Args":["org.property-registration-network.regnet.users:rechargeAccount","Aakash Bansal","1122 3344 5566","upg1000"]}
++ peer chaincode invoke -o orderer.property-registration-network.com:7050 --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/property-registration-network.com/orderers/orderer.property-registration-network.com/msp/tlscacerts/tlsca.property-registration-network.com-cert.pem -C property-registration-channel -n regnet --peerAddresses peer0.users.property-registration-network.com:9051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/users.property-registration-network.com/peers/peer0.users.property-registration-network.com/tls/ca.crt -c '{"Args":["org.property-registration-network.regnet.users:rechargeAccount","Aakash Bansal","1122 3344 5566","upg1000"]}'
++ res=0
++ set +x
+2022-04-30 10:38:31.017 UTC [chaincodeCmd] chaincodeInvokeOrQuery -> INFO 001 Chaincode invoke successful. result: status:200 payload:"{\"class\":\"org.property-registration-network.regnet.models.user\",\"key\":\"AAKASHBANSAL-112233445566\",\"currentState\":null,\"aadharNumber\":\"112233445566\",\"approvedAt\":\"2022-04-30T10:35:42.725Z\",\"email\":\"aakashbansal@gmail.com\",\"name\":\"Aakash Bansal\",\"phone\":\"8523698741\",\"requestedAt\":\"2022-04-30T10:32:04.969Z\",\"upgradCoins\":\"1100\"}"
+===================== Invoke transaction successful on peer0.users on channel 'property-registration-channel' =====================
+
+
+----------------------------------------------------------------------------------------------
+Verify balance amount of 1100 for user: Aakash Bansal and 1122 3344 5566 - (executing on peer0.users)
+----------------------------------------------------------------------------------------------
+
+===================== Querying on peer0.users on channel 'property-registration-channel'... =====================
+Attempting to Query peer0.users ...5 secs
++ C_PARAMETER='{"Args":["org.property-registration-network.regnet.users:viewUser","Aakash Bansal","1122 3344 5566"]}'
++ peer chaincode query -C property-registration-channel -n regnet -c '{"Args":["org.property-registration-network.regnet.users:viewUser","Aakash Bansal","1122 3344 5566"]}'
++ res=0
++ set +x
+Actual Value for upgradCoins:  "1100"
+Expected Value for upgradCoins:  "1100"
+{"class":"org.property-registration-network.regnet.models.user","key":"AAKASHBANSAL-112233445566","currentState":null,"aadharNumber":"112233445566","approvedAt":"2022-04-30T10:35:42.725Z","email":"aakashbansal@gmail.com","name":"Aakash Bansal","phone":"8523698741","requestedAt":"2022-04-30T10:32:04.969Z","upgradCoins":"1100"}
+===================== Query successful on peer0.users on channel 'property-registration-channel' =====================
+
+----------------------------------------------------------------------------------------------
+updateProperty for Sale for propertyId: 2, user: Aakash Bansal and 1122 3344 5566 - (executing on peer0.users)
+----------------------------------------------------------------------------------------------
+
+{"Args":["org.property-registration-network.regnet.users:updateProperty","Aakash Bansal","1122 3344 5566","2","onSale"]}
++ peer chaincode invoke -o orderer.property-registration-network.com:7050 --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/property-registration-network.com/orderers/orderer.property-registration-network.com/msp/tlscacerts/tlsca.property-registration-network.com-cert.pem -C property-registration-channel -n regnet --peerAddresses peer0.users.property-registration-network.com:9051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/users.property-registration-network.com/peers/peer0.users.property-registration-network.com/tls/ca.crt -c '{"Args":["org.property-registration-network.regnet.users:updateProperty","Aakash Bansal","1122 3344 5566","2","onSale"]}'
++ res=0
++ set +x
+2022-04-30 10:38:47.182 UTC [chaincodeCmd] chaincodeInvokeOrQuery -> INFO 001 Chaincode invoke successful. result: status:200 payload:"{\"class\":\"org.property-registration-network.regnet.models.property\",\"key\":\"2\",\"currentState\":null,\"approvedAt\":\"2022-04-30T10:36:59.953Z\",\"owner\":\"AAKASHBANSAL-112233445566\",\"price\":\"800\",\"propertyId\":\"2\",\"requestedAt\":\"2022-04-30T10:36:43.818Z\",\"status\":\"onSale\"}"
+===================== Invoke transaction successful on peer0.users on channel 'property-registration-channel' =====================
+
+
+----------------------------------------------------------------------------------------------
+verify status is onSale for property propertyId: 2 - (executing on peer0.users)
+----------------------------------------------------------------------------------------------
+
+===================== Querying on peer0.users on channel 'property-registration-channel'... =====================
+Attempting to Query peer0.users ...5 secs
++ C_PARAMETER='{"Args":["org.property-registration-network.regnet.users:viewProperty","2"]}'
++ peer chaincode query -C property-registration-channel -n regnet -c '{"Args":["org.property-registration-network.regnet.users:viewProperty","2"]}'
++ res=0
++ set +x
+Actual Value for status:  "onSale"
+Expected Value for status:  "onSale"
+{"class":"org.property-registration-network.regnet.models.property","key":"2","currentState":null,"approvedAt":"2022-04-30T10:36:59.953Z","owner":"AAKASHBANSAL-112233445566","price":"800","propertyId":"2","requestedAt":"2022-04-30T10:36:43.818Z","status":"onSale"}
+===================== Query successful on peer0.users on channel 'property-registration-channel' =====================
+
+----------------------------------------------------------------------------------------------
+Invoke purchaseProperty for propertyId: 2, buyer: Pankaj Mahadik and 8844 4455 6677 - (executing on peer0.users)
+----------------------------------------------------------------------------------------------
+
+{"Args":["org.property-registration-network.regnet.users:purchaseProperty","Pankaj Mahadik","8844 4455 6677","2"]}
++ peer chaincode invoke -o orderer.property-registration-network.com:7050 --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/property-registration-network.com/orderers/orderer.property-registration-network.com/msp/tlscacerts/tlsca.property-registration-network.com-cert.pem -C property-registration-channel -n regnet --peerAddresses peer0.users.property-registration-network.com:9051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/users.property-registration-network.com/peers/peer0.users.property-registration-network.com/tls/ca.crt -c '{"Args":["org.property-registration-network.regnet.users:purchaseProperty","Pankaj Mahadik","8844 4455 6677","2"]}'
++ res=0
++ set +x
+2022-04-30 10:39:03.211 UTC [chaincodeCmd] chaincodeInvokeOrQuery -> INFO 001 Chaincode invoke successful. result: status:200 payload:"{\"class\":\"org.property-registration-network.regnet.models.property\",\"key\":\"2\",\"currentState\":null,\"approvedAt\":\"2022-04-30T10:36:59.953Z\",\"owner\":\"PANKAJMAHADIK-884444556677\",\"price\":\"800\",\"propertyId\":\"2\",\"requestedAt\":\"2022-04-30T10:36:43.818Z\",\"status\":\"registered\"}"
+===================== Invoke transaction successful on peer0.users on channel 'property-registration-channel' =====================
+
+
+----------------------------------------------------------------------------------------------
+Verify status of property is re-set to 'registered' for property: 2 - (executing on peer0.registrar)
+----------------------------------------------------------------------------------------------
+
+===================== Querying on peer0.registrar on channel 'property-registration-channel'... =====================
+Attempting to Query peer0.registrar ...5 secs
++ C_PARAMETER='{"Args":["org.property-registration-network.regnet.users:viewProperty","2"]}'
++ peer chaincode query -C property-registration-channel -n regnet -c '{"Args":["org.property-registration-network.regnet.users:viewProperty","2"]}'
++ res=0
++ set +x
+Actual Value for status:  "registered"
+Expected Value for status:  "registered"
+{"class":"org.property-registration-network.regnet.models.property","key":"2","currentState":null,"approvedAt":"2022-04-30T10:36:59.953Z","owner":"PANKAJMAHADIK-884444556677","price":"800","propertyId":"2","requestedAt":"2022-04-30T10:36:43.818Z","status":"registered"}
+===================== Query successful on peer0.registrar on channel 'property-registration-channel' =====================
+
+----------------------------------------------------------------------------------------------
+Verify Owner of property reflects Pankaj Mahadik for property: 2 - (executing on peer1.registrar)
+----------------------------------------------------------------------------------------------
+
+===================== Querying on peer1.registrar on channel 'property-registration-channel'... =====================
+Attempting to Query peer1.registrar ...5 secs
++ C_PARAMETER='{"Args":["org.property-registration-network.regnet.users:viewProperty","2"]}'
++ peer chaincode query -C property-registration-channel -n regnet -c '{"Args":["org.property-registration-network.regnet.users:viewProperty","2"]}'
++ res=0
++ set +x
+Actual Value for owner:  "PANKAJMAHADIK-884444556677"
+Expected Value for owner:  "PANKAJMAHADIK-884444556677"
+{"class":"org.property-registration-network.regnet.models.property","key":"2","currentState":null,"approvedAt":"2022-04-30T10:36:59.953Z","owner":"PANKAJMAHADIK-884444556677","price":"800","propertyId":"2","requestedAt":"2022-04-30T10:36:43.818Z","status":"registered"}
+===================== Query successful on peer1.registrar on channel 'property-registration-channel' =====================
+
+----------------------------------------------------------------------------------------------
+Verify Seller receives the amount of 800 as price for property: 2. Total=1100+800=1900 - (executing on peer0.users)
+----------------------------------------------------------------------------------------------
+
+===================== Querying on peer0.users on channel 'property-registration-channel'... =====================
++ C_PARAMETER='{"Args":["org.property-registration-network.regnet.users:viewUser","Aakash Bansal","1122 3344 5566"]}'
++ peer chaincode query -C property-registration-channel -n regnet -c '{"Args":["org.property-registration-network.regnet.users:viewUser","Aakash Bansal","1122 3344 5566"]}'
+Attempting to Query peer0.users ...5 secs
++ res=0
++ set +x
+Actual Value for upgradCoins:  "1900"
+Expected Value for upgradCoins:  "1900"
+{"class":"org.property-registration-network.regnet.models.user","key":"AAKASHBANSAL-112233445566","currentState":null,"aadharNumber":"112233445566","approvedAt":"2022-04-30T10:35:42.725Z","email":"aakashbansal@gmail.com","name":"Aakash Bansal","phone":"8523698741","requestedAt":"2022-04-30T10:32:04.969Z","upgradCoins":"1900"}
+===================== Query successful on peer0.users on channel 'property-registration-channel' =====================
+
+----------------------------------------------------------------------------------------------
+Verify Buyer spend the amount of 800 as price for property: 2. Total=1600-800=800 - (executing on peer0.users)
+----------------------------------------------------------------------------------------------
+
+===================== Querying on peer0.users on channel 'property-registration-channel'... =====================
+Attempting to Query peer0.users ...5 secs
++ C_PARAMETER='{"Args":["org.property-registration-network.regnet.users:viewUser","Pankaj Mahadik","8844 4455 6677"]}'
++ peer chaincode query -C property-registration-channel -n regnet -c '{"Args":["org.property-registration-network.regnet.users:viewUser","Pankaj Mahadik","8844 4455 6677"]}'
++ res=0
++ set +x
+Actual Value for upgradCoins:  "800"
+Expected Value for upgradCoins:  "800"
+{"class":"org.property-registration-network.regnet.models.user","key":"PANKAJMAHADIK-884444556677","currentState":null,"aadharNumber":"884444556677","approvedAt":"2022-04-30T10:32:34.039Z","email":"mahadikpankaj@gmail.com","name":"Pankaj Mahadik","phone":"9890787870","requestedAt":"2022-04-30T10:31:46.808Z","upgradCoins":"800"}
+===================== Query successful on peer0.users on channel 'property-registration-channel' =====================
+
+----------------------------------------------------------------------------------------------
+Verify both the Properties owned by 'Pankaj Mahadik' - (executing on peer0.users)
+----------------------------------------------------------------------------------------------
+
+===================== Querying on peer0.users on channel 'property-registration-channel'... =====================
+Attempting to Query peer0.users ...5 secs
++ C_PARAMETER='{"Args":["org.property-registration-network.regnet.users:getAllProperties"]}'
++ peer chaincode query -C property-registration-channel -n regnet -c '{"Args":["org.property-registration-network.regnet.users:getAllProperties"]}'
++ res=0
++ set +x
+["{\"approvedAt\":\"2022-04-30T10:36:26.467Z\",\"class\":\"org.property-registration-network.regnet.models.property\",\"currentState\":null,\"key\":\"1\",\"owner\":\"PANKAJMAHADIK-884444556677\",\"price\":\"1000\",\"propertyId\":\"1\",\"requestedAt\":\"2022-04-30T10:36:09.726Z\",\"status\":\"registered\"}","{\"approvedAt\":\"2022-04-30T10:36:59.953Z\",\"class\":\"org.property-registration-network.regnet.models.property\",\"currentState\":null,\"key\":\"2\",\"owner\":\"PANKAJMAHADIK-884444556677\",\"price\":\"800\",\"propertyId\":\"2\",\"requestedAt\":\"2022-04-30T10:36:43.818Z\",\"status\":\"registered\"}"]
+===================== Query successful on peer0.users on channel 'property-registration-channel' =====================
+
+========= Congratulations...! pankaj_property_registration_network built and all use cases executed successfully ===========
+
+Completed: Building fabric network and installing chaincodes
+
+
+   ____    ___    __  __   ____    _       _____   _____   _____   ____
+  / ___|  / _ \  |  \/  | |  _ \  | |     | ____| |_   _| | ____| |  _ \
+ | |     | | | | | |\/| | | |_) | | |     |  _|     | |   |  _|   | | | |
+ | |___  | |_| | | |  | | |  __/  | |___  | |___    | |   | |___  | |_| |
+  \____|  \___/  |_|  |_| |_|     |_____| |_____|   |_|   |_____| |____/
+

@@ -1,0 +1,46 @@
+# Copyright IBM Corp. All Rights Reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+version: '3'
+
+networks:
+  property_registration_network:
+
+services:
+  ca0:
+    image: hyperledger/fabric-ca:$IMAGE_TAG
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server-config
+      - FABRIC_CA_SERVER_CA_NAME=ca-registrar
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+#      - FABRIC_CA_SERVER_TLS_ENABLED=false
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.registrar.property-registration-network.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/${CA1_PRIVATE_KEY}
+    ports:
+      - "7054:7054"
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.registrar.property-registration-network.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/${CA1_PRIVATE_KEY} -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/registrar.property-registration-network.com/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca.registrar.property-registration-network.com
+    networks:
+      - property_registration_network
+
+  ca1:
+    image: hyperledger/fabric-ca:$IMAGE_TAG
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server-config
+      - FABRIC_CA_SERVER_CA_NAME=ca-users
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+#      - FABRIC_CA_SERVER_TLS_ENABLED=false
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.users.property-registration-network.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/${CA2_PRIVATE_KEY}
+    ports:
+      - "8054:7054"
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.users.property-registration-network.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/${CA2_PRIVATE_KEY} -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/users.property-registration-network.com/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca.users.property-registration-network.com
+    networks:
+      - property_registration_network
