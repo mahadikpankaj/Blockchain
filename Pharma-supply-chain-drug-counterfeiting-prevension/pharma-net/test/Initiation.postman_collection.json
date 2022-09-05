@@ -1,0 +1,652 @@
+{
+	"info": {
+		"_postman_id": "ab0f86a2-64ad-4a77-b06a-7fc9e85bc62b",
+		"name": "Initiation",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "6888901"
+	},
+	"item": [
+		{
+			"name": "Manufacturer - Create and View",
+			"item": [
+				{
+					"name": "registerCompany - Sun Pharma",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"orgGroupName\": \"manufacturer\",\r\n    \"companyCRN\": \"MAN001\",\r\n    \"companyName\": \"Sun Pharma\",\r\n    \"location\": \"Chennai\",\r\n    \"organizationRole\": \"manufacturer\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/registerCompany",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"registerCompany"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "viewCompany - Sun Pharma",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"orgGroupName\": \"consumer\",\r\n    \"companyCRN\": \"MAN001\",\r\n    \"companyName\": \"Sun Pharma\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/viewCompany",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"viewCompany"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "First Transporter - Create and View",
+			"item": [
+				{
+					"name": "registerCompany - FedEx",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"orgGroupName\": \"transporter\",\r\n    \"companyCRN\": \"TRA001\",\r\n    \"companyName\": \"FedEx\",\r\n    \"location\": \"Delhi\",\r\n    \"organizationRole\": \"transporter\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/registerCompany",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"registerCompany"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "viewCompany - FedEx",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"orgGroupName\": \"consumer\",\r\n    \"companyCRN\": \"TRA001\",\r\n    \"companyName\": \"FedEx\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/viewCompany",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"viewCompany"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Second Transporter - Create and View",
+			"item": [
+				{
+					"name": "registerCompany - Blue Dart",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"orgGroupName\": \"transporter\",\r\n    \"companyCRN\": \"TRA002\",\r\n    \"companyName\": \"Blue Dart\",\r\n    \"location\": \"Bangalore\",\r\n    \"organizationRole\": \"transporter\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/registerCompany",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"registerCompany"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "viewCompany - Blue Dart",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"orgGroupName\": \"consumer\",\r\n    \"companyCRN\": \"TRA002\",\r\n    \"companyName\": \"Blue Dart\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/viewCompany",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"viewCompany"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Distributor - Create and View",
+			"item": [
+				{
+					"name": "registerCompany - VG Pharma",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"orgGroupName\": \"distributor\",\r\n    \"companyCRN\": \"DIST001\",\r\n    \"companyName\": \"VG Pharma\",\r\n    \"location\": \"Vizag\",\r\n    \"organizationRole\": \"distributor\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/registerCompany",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"registerCompany"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "viewCompany - VG Pharma",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"orgGroupName\": \"consumer\",\r\n    \"companyCRN\": \"DIST001\",\r\n    \"companyName\": \"VG Pharma\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/viewCompany",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"viewCompany"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Retailer - Create and View",
+			"item": [
+				{
+					"name": "registerCompany - upGrad",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"orgGroupName\": \"retailer\",\r\n    \"companyCRN\": \"RET002\",\r\n    \"companyName\": \"upgrad\",\r\n    \"location\": \"Mumbai\",\r\n    \"organizationRole\": \"retailer\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/registerCompany",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"registerCompany"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "viewCompany - upGrad",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"orgGroupName\": \"retailer\",\r\n    \"companyCRN\": \"RET002\",\r\n    \"companyName\": \"upgrad\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/viewCompany",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"viewCompany"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Drug - Add and View",
+			"item": [
+				{
+					"name": "addDrug - Paracetamol-001",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"orgGroupName\": \"manufacturer\",\r\n    \"drugName\": \"Paracetamol\",\r\n    \"serialNo\": \"001\",\r\n    \"mfgDate\": \"2022-07-22\",\r\n    \"expDate\": \"2025-12-31\",\r\n    \"companyCRN\": \"MAN001\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/addDrug",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"addDrug"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "viewDrug - Paracetamol-001",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"orgGroupName\": \"consumer\",\r\n    \"drugName\": \"Paracetamol\",\r\n    \"serialNo\": \"001\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/viewDrug",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"viewDrug"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addDrug - Paracetamol-002",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"orgGroupName\": \"manufacturer\",\r\n    \"drugName\": \"Paracetamol\",\r\n    \"serialNo\": \"002\",\r\n    \"mfgDate\": \"2022-07-22\",\r\n    \"expDate\": \"2025-12-31\",\r\n    \"companyCRN\": \"MAN001\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/addDrug",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"addDrug"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "viewDrug - Paracetamol-002",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"orgGroupName\": \"consumer\",\r\n    \"drugName\": \"Paracetamol\",\r\n    \"serialNo\": \"002\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/viewDrug",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"viewDrug"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addDrug - Paracetamol-003",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"orgGroupName\": \"manufacturer\",\r\n    \"drugName\": \"Paracetamol\",\r\n    \"serialNo\": \"003\",\r\n    \"mfgDate\": \"2022-07-22\",\r\n    \"expDate\": \"2025-12-31\",\r\n    \"companyCRN\": \"MAN001\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/addDrug",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"addDrug"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "viewDrug - Paracetamol-003",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"orgGroupName\": \"consumer\",\r\n    \"drugName\": \"Paracetamol\",\r\n    \"serialNo\": \"003\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/viewDrug",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"viewDrug"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addDrug - Paracetamol-004",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"orgGroupName\": \"manufacturer\",\r\n    \"drugName\": \"Paracetamol\",\r\n    \"serialNo\": \"004\",\r\n    \"mfgDate\": \"2022-07-22\",\r\n    \"expDate\": \"2025-12-31\",\r\n    \"companyCRN\": \"MAN001\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/addDrug",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"addDrug"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "viewDrug - Paracetamol-004",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"orgGroupName\": \"consumer\",\r\n    \"drugName\": \"Paracetamol\",\r\n    \"serialNo\": \"004\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/viewDrug",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"viewDrug"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

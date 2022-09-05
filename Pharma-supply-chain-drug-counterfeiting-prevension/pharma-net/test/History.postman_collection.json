@@ -1,0 +1,78 @@
+{
+	"info": {
+		"_postman_id": "a8f3784e-a1a8-4191-a32a-6bc6265287e8",
+		"name": "History",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "6888901"
+	},
+	"item": [
+		{
+			"name": "viewDrug - current state of Drug - Paracetamol-001",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"orgGroupName\": \"consumer\",\r\n    \"drugName\": \"Paracetamol\",\r\n    \"serialNo\": \"001\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3000/viewDrug",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"viewDrug"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "viewHistory - History of Drug - Paracetamol-001",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"orgGroupName\": \"consumer\",\r\n    \"drugName\": \"Paracetamol\",\r\n    \"serialNo\": \"001\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3000/viewHistory",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"viewHistory"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

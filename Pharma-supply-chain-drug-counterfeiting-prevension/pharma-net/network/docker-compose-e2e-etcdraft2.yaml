@@ -1,0 +1,45 @@
+# Copyright IBM Corp. All Rights Reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+version: '3'
+
+volumes:
+  orderer2.pharma-network.com:
+  orderer3.pharma-network.com:
+
+networks:
+  pharma-network:
+
+services:
+
+  orderer2.pharma-network.com:
+    extends:
+      file: base/peer-base.yaml
+      service: orderer-base
+    container_name: orderer2.pharma-network.com
+    networks:
+    - pharma-network
+    volumes:
+        - ./channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
+        - ./crypto-config/ordererOrganizations/pharma-network.com/orderers/orderer2.pharma-network.com/msp:/var/hyperledger/orderer/msp
+        - ./crypto-config/ordererOrganizations/pharma-network.com/orderers/orderer2.pharma-network.com/tls/:/var/hyperledger/orderer/tls
+        - orderer2.pharma-network.com:/var/hyperledger/production/orderer
+    ports:
+    - 8050:7050
+
+  orderer3.pharma-network.com:
+    extends:
+      file: base/peer-base.yaml
+      service: orderer-base
+    container_name: orderer3.pharma-network.com
+    networks:
+    - pharma-network
+    volumes:
+        - ./channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
+        - ./crypto-config/ordererOrganizations/pharma-network.com/orderers/orderer3.pharma-network.com/msp:/var/hyperledger/orderer/msp
+        - ./crypto-config/ordererOrganizations/pharma-network.com/orderers/orderer3.pharma-network.com/tls/:/var/hyperledger/orderer/tls
+        - orderer3.pharma-network.com:/var/hyperledger/production/orderer
+    ports:
+    - 9050:7050

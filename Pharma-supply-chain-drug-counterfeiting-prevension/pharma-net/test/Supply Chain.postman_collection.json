@@ -1,0 +1,501 @@
+{
+	"info": {
+		"_postman_id": "20071740-b7fc-456b-9f23-36c452a58505",
+		"name": "Supply Chain",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "6888901"
+	},
+	"item": [
+		{
+			"name": "Part-a: Distributor Purchasing from Manufacturer",
+			"item": [
+				{
+					"name": "create PO - VG Pharma raises on Sun Pharma",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"orgGroupName\": \"distributor\",\r\n    \"buyerCRN\": \"DIST001\",\r\n    \"sellerCRN\": \"MAN001\",\r\n    \"drugName\": \"Paracetamol\",\r\n    \"quantity\": \"3\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/createPO",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"createPO"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "viewPO",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"orgGroupName\": \"distributor\",\r\n    \"buyerCRN\": \"DIST001\",\r\n    \"drugName\": \"Paracetamol\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/viewPO",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"viewPO"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createShipment - Sun Pharma to FedEx",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"orgGroupName\": \"manufacturer\",\r\n    \"buyerCRN\": \"DIST001\",\r\n    \"drugName\": \"Paracetamol\",\r\n    \"listOfAssets\": [\r\n        \"001\",\r\n        \"002\",\r\n        \"003\"\r\n    ],\r\n    \"transporterCRN\": \"TRA001\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/createShipment",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"createShipment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "viewShipment (in-transit)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"orgGroupName\": \"manufacturer\",\r\n    \"buyerCRN\": \"DIST001\",\r\n    \"drugName\": \"Paracetamol\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/viewShipment",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"viewShipment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update Shipment - FedEx to VG Pharma",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"orgGroupName\": \"transporter\",\r\n    \"buyerCRN\": \"DIST001\",\r\n    \"drugName\": \"Paracetamol\",\r\n    \"transporterCRN\": \"TRA001\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/updateShipment",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"updateShipment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "view updated Shipment (delivered)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"orgGroupName\": \"manufacturer\",\r\n    \"buyerCRN\": \"DIST001\",\r\n    \"drugName\": \"Paracetamol\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/viewShipment",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"viewShipment"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Part-b: Retailer Purchasing from Distributor",
+			"item": [
+				{
+					"name": "create PO - upGrad raises on VG Pharma",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"orgGroupName\": \"retailer\",\r\n    \"buyerCRN\": \"RET002\",\r\n    \"sellerCRN\": \"DIST001\",\r\n    \"drugName\": \"Paracetamol\",\r\n    \"quantity\": \"2\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/createPO",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"createPO"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "viewPO",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"orgGroupName\": \"retailer\",\r\n    \"buyerCRN\": \"RET002\",\r\n    \"drugName\": \"Paracetamol\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/viewPO",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"viewPO"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createShipment - VG Pharma to Blue Dart",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"orgGroupName\": \"distributor\",\r\n    \"buyerCRN\": \"RET002\",\r\n    \"drugName\": \"Paracetamol\",\r\n    \"listOfAssets\": [\r\n        \"001\",\r\n        \"002\"\r\n    ],\r\n    \"transporterCRN\": \"TRA002\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/createShipment",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"createShipment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "viewShipment (in-transit)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"orgGroupName\": \"distributor\",\r\n    \"buyerCRN\": \"RET002\",\r\n    \"drugName\": \"Paracetamol\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/viewShipment",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"viewShipment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update Shipment - Blue Dart to upGrad",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"orgGroupName\": \"transporter\",\r\n    \"buyerCRN\": \"RET002\",\r\n    \"drugName\": \"Paracetamol\",\r\n    \"transporterCRN\": \"TRA002\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/updateShipment",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"updateShipment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "view updated Shipment (delivered)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"orgGroupName\": \"retailer\",\r\n    \"buyerCRN\": \"RET002\",\r\n    \"drugName\": \"Paracetamol\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/viewShipment",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"viewShipment"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Part-c: Customer buys from a retailer",
+			"item": [
+				{
+					"name": "retailDrug - Aakash buys from upGrad",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"orgGroupName\": \"retailer\",\r\n    \"serialNo\": \"001\",\r\n    \"drugName\": \"Paracetamol\",\r\n    \"retailerCRN\": \"RET002\",\r\n    \"customerAadhar\": \"AAD001\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/retailDrug",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"retailDrug"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "viewDrug - Paracetamol-001",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"orgGroupName\": \"consumer\",\r\n    \"drugName\": \"Paracetamol\",\r\n    \"serialNo\": \"001\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/viewDrug",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"viewDrug"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

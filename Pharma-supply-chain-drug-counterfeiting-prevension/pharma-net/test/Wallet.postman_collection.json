@@ -1,0 +1,180 @@
+{
+	"info": {
+		"_postman_id": "19125198-cb49-4165-9274-de768bd0bc2e",
+		"name": "Wallet",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "6888901"
+	},
+	"item": [
+		{
+			"name": "addToWallet - Manufacturer",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"orgGroupName\": \"manufacturer\",\r\n    \"certificatePath\": \"\",\r\n    \"privateKeyPath\": \"\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3000/addToWallet",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"addToWallet"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "addToWallet - Distributor",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"orgGroupName\": \"distributor\",\r\n    \"certificatePath\": \"\",\r\n    \"privateKeyPath\": \"\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3000/addToWallet",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"addToWallet"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "addToWallet - Retailer",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"orgGroupName\": \"retailer\",\r\n    \"certificatePath\": \"\",\r\n    \"privateKeyPath\": \"\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3000/addToWallet",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"addToWallet"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "addToWallet - Transporter",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"orgGroupName\": \"transporter\",\r\n    \"certificatePath\": \"\",\r\n    \"privateKeyPath\": \"\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3000/addToWallet",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"addToWallet"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "addToWallet - Consumer",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"orgGroupName\": \"consumer\",\r\n    \"certificatePath\": \"\",\r\n    \"privateKeyPath\": \"\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3000/addToWallet",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"addToWallet"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
